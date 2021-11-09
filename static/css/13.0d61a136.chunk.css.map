@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/pages/Admin/Dashboard/Styles.css"],"names":[],"mappings":"AAAA,4BAAkC,YAAc","file":"13.0d61a136.chunk.css","sourcesContent":[".icon:hover > .svg path:hover   { fill:#57B78C; }\r\n/* .icon{ color:#57B78C; } */\r\n\r\n\r\n\r\n/* .svg path:hover{ fill:#57B78C; } */"]}
