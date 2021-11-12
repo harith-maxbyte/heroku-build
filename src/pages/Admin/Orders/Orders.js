@@ -187,7 +187,7 @@ const styles = theme => ({
 		// minWidth: 540,
 		borderRadius: "8px",
 		background: "#FFFFFF",
-		width: "101%"
+		// width: "101%"
 	},
 	title: {
 		textDecoration: 'none',
@@ -214,7 +214,7 @@ const styles = theme => ({
 		boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)",
 		textAlign: "center",
 		position: "static",
-		width: "272.5px",
+		// width: "272.5px",
 		height: "68px",
 		left: "0px",
 		top: "0px",
@@ -238,7 +238,7 @@ const styles = theme => ({
 		boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)",
 		textAlign: "center",
 		position: "static",
-		width: "272.5px",
+		// width: "272.5px",
 		height: "68px",
 		left: "288.5px",
 		top: "0px",
@@ -611,7 +611,9 @@ class Orders extends Component {
 						left: "15px",
 						top: "18px"
 					}}>Order status</h3>
-					<div style={{ height: 320, width: 560 }}>
+					<div 
+					style={{ height: 320 }}
+					>
 						<ResponsivePie
 							data={data}
 							margin={{ top: 20, right: 80, bottom: 20, left: 20 }}
@@ -931,7 +933,7 @@ class Orders extends Component {
 
 							</TextField></div>}
 						<Button variant="contained" className={classes.buttonVariant}>
-							<FaPlus size={13} style={{ paddingRight: 5 }} /> New Order
+							<FaPlus size={13} /> New Order
 						</Button>
 					</div>
 				</div>
@@ -980,11 +982,13 @@ class Orders extends Component {
 					</Grid>}
 					{!this.state.enableOrderListView && piechartData && piechartData.OrderStatus && <Grid item xs={12} md={6}>
 						<Card className={classes.card}
-							style={{
-								width: "561px",
-								height: "100%"
-								}}>
+							// style={{
+							// 	width: "561px",
+							// 	height: "100%"
+							// 	}}
+								>
 							{this.returnPieChart(piechartData.OrderStatus)}
+							{/* asdasdasda asdadasdas */}
 						</Card>
 					</Grid>}
 

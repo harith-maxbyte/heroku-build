@@ -472,7 +472,7 @@ class Customers extends Component {
 						left: "15px",
 						top: "18px"
 					}}>Customer types</h3>
-					<div style={{ height: 280, width: 560 }}>
+					<div style={{ height: 280 }}>
 						<ResponsivePie
 							data={data}
 							margin={{ top: 30, right: 80, bottom: 20, left: -20 }}

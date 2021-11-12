@@ -27,25 +27,11 @@ const styles = theme => ({
 	wrapper: {
 		display: "grid",
 		gridTemplateColumns: "1fr 1fr",
-		columnGap: "1em"
+		columnGap: "2em"
 	},
 	bottomWrapper: {
 		display: "grid",
-		gridTemplateColumns: "1fr 1fr",
-		// display:"flex",
-		// flexDirection:"row",
-		// justifyContent:"center",
-		// alignItems:"center",
-		// padding:"16px",
-		// position:"static",
-		// width:"1133px",
-		// height:"82px",
-		// left:"calc(50% - 1133px/2)",
-		// bottom:"0px",
-		// backgroundColor:"#FFFFFF",
-		// boxShadow:"0px -4px 15px rgba(0, 0, 0, 0.12)",
-		// margin:"16px 0px"
-		// margin: "0px"
+		gridTemplateColumns: "1fr 1fr"
 	},
 	title: {
 		fontSize: 16,
@@ -69,7 +55,6 @@ const styles = theme => ({
 		borderRadius: "8px",
 		padding: "12px 16px",
 		boxSizing: "border-box",
-		// width: "333.5px",
 		height: "48px",
 		fontSize: "13x !important",
 		fontFamily: "SourceSansPro-Regular",
@@ -97,8 +82,8 @@ const styles = theme => ({
 		}
 	},
 	dragContainer: {
-		width: "100%",
-		height: "100%",
+		// width: "100%",
+		// height: "100%",
 		padding: 15,
 		borderRadius: "10px",
 		boxSizing: "border-box",
@@ -113,6 +98,7 @@ const styles = theme => ({
 		margin: "5px 0px",
 		color: "#fff",
 		borderRadius: 6,
+		// width: "542.5px",
 		fontSize: "16px",
 		padding: "5px 20px",
 		height: "fit-content",
@@ -123,15 +109,9 @@ const styles = theme => ({
 		},
 	},
 	uploadButton: {
-		// display:"flex",
-		// flexDirection:"column",
-		// justifyContent:"center",
-		// alignItems:"flex-end",
-		position: "static",
-		width: "181px",
-		left: "calc(50% - 181px/2)",
-		top: "0%",
-		bottom: "0%",
+
+		// width: "181px",
+		width:"11.3125em",
 		backgroundColor: "#1B1B1B",
 		borderRadius: "8px",
 		boxShadow: "0px 0px 0px 0px #1B1B1B",
@@ -360,10 +340,13 @@ class AddProduct extends Component {
 					</Typography>
 					<Typography style={{ fontFamily: "SourceSansPro-Regular", fontSize: 15, fontWeight: "600", lineHeight: "20px", width: "132px", height: "20px" }} color="textPrimary">Add New Product</Typography>
 				</Breadcrumbs>
+				
 				<div className={classes.wrapper}>
-					<div className={classes.paper}>
+				
+					{/* <div > */}
+						
+						<Grid container spacing={2} direction="column" className={classes.paper}>
 						<Typography className={classes.title}>Basic Information</Typography>
-						<Grid container spacing={2} direction="column">
 							<Grid container direction="row">
 								<Grid item xs={5}>
 									<Typography className={classes.textFiledText}>Product Name</Typography>
@@ -580,13 +563,16 @@ class AddProduct extends Component {
 								/></Grid>
 							</Grid>
 						</Grid>
-					</div>
+					{/* </div> */}
+					
 					<div className={classes.paper}>
-						<Grid container spacing={2} direction="column">
+						<Grid container spacing={2} direction="column" >
 							<Typography className={classes.title}>Product Image</Typography>
 							<Grid item xs={12}>
 								{this.state.file !== null ?
-									<div className={classes.dragContainer} style={{ display: "block", height: 150 }}>
+									<div className={classes.dragContainer} 
+									// style={{ display: "block", height: 150 }}
+									>
 										<div>
 											<img src={this.state.imgSrc} alt="org" width={100} height="auto" />
 										</div>
@@ -634,8 +620,6 @@ class AddProduct extends Component {
 
 								<hr
 									style={{
-										position: "Static",
-										// width:"635px",
 										margin: "24px 0px",
 										alignSelf: "stretch",
 										border: "1px solid #E1E0E0",
@@ -682,14 +666,14 @@ class AddProduct extends Component {
 				<div className={classes.bottomWrapper}>
 					<div className={classes.bottomPaper}>
 						<Button variant="contained" className={classes.buttonVariant} onClick={() => this.submit()}
-							style={{ position: "static", left: "calc(50% - 542.5px/2)", width: "542.5px", display: "flex", justifyContent: "center", backgroundColor: "#FFFFFF", border: "1px solid #616060", borderRadius: "8px" }}>
+							style={{ display: "flex", justifyContent: "center", backgroundColor: "#FFFFFF", border: "1px solid #616060",width:"100%", borderRadius: "8px" }}>
 							<Typography className={classes.textFiledText}>Discard</Typography>
 						</Button>
 					</div>
 					<div className={classes.bottomPaper}>
 
 						<Button variant="contained" className={classes.buttonVariant} onClick={() => this.submit()}
-							style={{ padding: "16px", position: "static", left: "calc(50% - 542.5px/2)", width: "542.5px", display: "flex", justifyContent: "center", backgroundColor: "#57B78C", borderRadius: "8px" }}>
+							style={{ padding: "16px",  display: "flex", justifyContent: "center", backgroundColor: "#57B78C",width:"100%", borderRadius: "8px" }}>
 							Create Product
 						</Button>
 					</div>

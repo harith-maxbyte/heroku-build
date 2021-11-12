@@ -447,7 +447,7 @@ class Product extends Component {
 	}
 
 	returnPiechart = (productsBrandSegmentationPie) => {
-		console.log("productsBrandSegmentationPie=", productsBrandSegmentationPie)
+		// console.log("productsBrandSegmentationPie=", productsBrandSegmentationPie)
 		if (productsBrandSegmentationPie.length > 0) {
 			const data = [];
 			let series = [];
@@ -469,7 +469,7 @@ class Product extends Component {
 				<>
 					<h3 style={{ display: "flex", alignItems: "center", color: "#000", fontWeight: "600", fontSize: 18, paddingLeft: 12, fontFamily: "SourceSansPro-SemiBold" }}>Brand segmentation</h3>
 					<div style={{
-						width: 600, height: 400
+						 height: 400
 					}}>
 						<ResponsivePie
 							data={data}
@@ -655,7 +655,7 @@ class Product extends Component {
 	render() {
 		const { classes, allProducts, popularProducts, productsBrandSegmentationPie } = this.props;
 		const { rowsPerPage, page } = this.state;
-		console.log("popularProducts=", popularProducts)
+		// console.log("popularProducts=", popularProducts)
 		return (
 			<div className={classes.root}>
 				{this.state.enableCustomModal && <CustomModal isOpen={this.state.enableCustomModal} fromDate={this.state.startDate} toDate={this.state.endDate} handelopen={this.handleOpenCustomModel} cancel={this.handleCloseCustomModel} />}

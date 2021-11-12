@@ -61,21 +61,27 @@ export default function Map() {
         latitude: 1.3521,
         longitude: 103.8198,
         zoom: 9,
-        width: "100%",
+        width: "200%",
         height: "200%"
          
     });
 
+		
     return (
-        <div style={{display:"block",height:135,padding:10,borderRadius:8,marginTop:-20}}>
+        
+         <div style={{display:"block",height:135,padding:10,borderRadius:8,marginTop:-20}}>
+           {/* <Grid item xs={12} sm={12} md={5}> */}
+               {/* <Card {...styles}> */}
             <ReactMapGL
                 mapboxApiAccessToken={MAPBOX_TOKEN}
                 {...viewport}
                 onViewportChange={(viewport) => setViewport(viewport)}
-                mapStyle="mapbox://styles/harithkv47/ckvq4u0ctflu514nnayrhyvo0"
+                //
+                //mapbox://styles/harithkv47/ckvq4u0ctflu514nnayrhyvo0
+                mapStyle="mapbox://styles/mapbox/streets-v11"
             />
             <ColoredLine color={["#9BE6FC", "#5EC8E6", "#52ADD5", "#4593C3", "#377AB2"]} />
-        </div>
+         </div>
     );
 }
 

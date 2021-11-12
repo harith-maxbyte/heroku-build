@@ -7,7 +7,6 @@ import Map from './Map';
 import { getDasboardData, getChartData } from '../../../store/actions/dashboard_action';
 import { getPopularProducts } from '../../../store/actions/product_action';
 import Skeleton from '@material-ui/lab/Skeleton';
-import MediaQuery from 'react-responsive';
 import money from '../../../assets/images/svg/money.svg';
 import delivery from '../../../assets/images/svg/delivery-box.svg';
 import lighting from '../../../assets/images/svg/lighting.svg';
@@ -186,6 +185,7 @@ class Dashboard extends Component {
 		};
 	}
 
+
 	handleClick = (event) => {
 		this.setState({ anchorEl: event.currentTarget })
 	};
@@ -241,7 +241,7 @@ class Dashboard extends Component {
 		}];
 		let chartOptions = {
 			chart: {
-				height: 250,
+				height: 323,
 				type: 'line',
 				fontFamily: "SourceSansPro-Regular",
 				stacked: false,
@@ -259,8 +259,8 @@ class Dashboard extends Component {
 				text: "Average Sales (in S$)",
 				align: 'left',
 				floating: true,
-				offsetX:7,
-				offsetY:7,
+				offsetX: 7,
+				offsetY: 7,
 				style: {
 					fontSize: '18px',
 					fontWeight: 600,
@@ -275,26 +275,27 @@ class Dashboard extends Component {
 				curve: 'smooth',
 				width: [2, 1],
 				dashArray: [0, 8],
-				left: "43.25%",
-				right: "-1739.91%",
-				top: "20.09%",
 				bottom: "40.49%",
 				border: "2px solid #F3852A",
 				borderRadius: "100px",
 			},
 			fill: {
 				colors: ['#FEEFE8', '#FEEFE8'],
-				position: "absolute",
-				left: "43.25%",
-				right: "-1739.91%",
-				top: "20.09%",
-				bottom: "10.18%",
-				backgroundColor: "linear-gradient(180deg, #F3852A 0%, rgba(243, 133, 42, 0) 100%)",
-				opacity: [0.12],
-				borderRadius: "100px",
+				opacity: 0.9,
+				type: 'solid',
+				gradient: {
+					shade: 'dark',
+					type: "horizontal",
+					shadeIntensity: 0.5,
+					gradientToColors: undefined,
+					inverseColors: true,
+					opacityFrom: 1,
+					opacityTo: 1,
+					stops: [0, 50, 100],
+					colorStops: []
+				},
 			},
 			colors: ["#F3852A", "#B9B8B8"],
-
 			labels: lable,
 			markers: {
 				size: 0
@@ -335,11 +336,7 @@ class Dashboard extends Component {
 				},
 			}
 		}
-		return (
-			<div>
-				<ReactApexChart options={chartOptions} series={series} type="line" height={323} width={561} left={24} top={292} />
-			</div>
-		)
+		return (<ReactApexChart options={chartOptions} series={series} type="line" height={323} />)
 	}
 
 	/**
@@ -379,7 +376,7 @@ class Dashboard extends Component {
 		}];
 		let chartOptions = {
 			chart: {
-				height: 250,
+				height: 323,
 				type: 'line',
 				stacked: false,
 				fontFamily: "SourceSansPro-Regular",
@@ -397,8 +394,8 @@ class Dashboard extends Component {
 				text: "Energy Consumption (kWh)",
 				align: 'left',
 				floating: true,
-				offsetX:7,
-				offsetY:7,
+				offsetX: 7,
+				offsetY: 7,
 				style: {
 					fontSize: '18px',
 					fontWeight: 600,
@@ -471,24 +468,8 @@ class Dashboard extends Component {
 				},
 
 			}
-			// tooltip: {
-			// 	shared: true,
-			// 	intersect: false,
-			// 	y: {
-			// 		formatter: function (y) {
-			// 			if (typeof y !== "undefined") {
-			// 				return y.toFixed(0) + " points";
-			// 			}
-			// 			return y;
-			// 		}
-			// 	}
-			// }
 		}
-		return (
-			<div>
-				<ReactApexChart options={chartOptions} series={series} type="line" height={323} width={561} left={601} top={292} />
-			</div>
-		)
+		return (<ReactApexChart options={chartOptions} series={series} type="line" height={323} />)
 	}
 
 	initialDashboardLoad = () => {
@@ -582,22 +563,20 @@ class Dashboard extends Component {
 	/** rendering Dashboard information. */
 	render() {
 		const { classes, popularProducts, dashboardData, chartData } = this.props;
-		console.log(chartData)
+		// console.log(chartData)
 		return (
 			<div className={classes.root}>
 				{this.state.enableCustomModal && <CustomModal isOpen={this.state.enableCustomModal} fromDate={this.state.startDate} toDate={this.state.endDate} handelopen={this.handleOpenCustomModel} cancel={this.handleCloseCustomModel} />}
-				{/* date dropdown */}
-				<div style={{
-					display: "flex", justifyContent: "flex-end",
-					boxSizing: "border-box",
-					borderRadius: "8px",
-					order: "1",
-					flexGrow: "0",
-					// width:"263px",
-					// height:"48px",
-					// padding:"12px 16px",
-					margin: "8px 0px"
-				}}>
+				<div
+					style={{
+						display: "flex", justifyContent: "flex-end",
+						boxSizing: "border-box",
+						borderRadius: "8px",
+						order: "1",
+						flexGrow: "0",
+						margin: "8px 0px"
+					}}
+				>
 					<div style={{ display: "flex" }}>
 						<TextField
 							style={{ margin: 5 }}
@@ -627,7 +606,6 @@ class Dashboard extends Component {
 
 
 				<Grid container spacing={2}>
-					{/* total sales */}
 					<Grid item xs={12} sm={6} md={3}>
 						{dashboardData && <Card className={classes.carda}>
 							<div className={classes.row}>
@@ -640,7 +618,6 @@ class Dashboard extends Component {
 							</div>
 						</Card>}
 					</Grid>
-					{/* total orders */}
 					<Grid item xs={12} sm={6} md={3}>
 						{dashboardData && <Card className={classes.cardb}>
 							<div className={classes.row}>
@@ -653,7 +630,6 @@ class Dashboard extends Component {
 							</div>
 						</Card>}
 					</Grid>
-					{/* total energy consumed		 */}
 					<Grid item xs={12} sm={6} md={3}>
 						{dashboardData && <Card className={classes.cardc}>
 							<div className={classes.row}>
@@ -666,8 +642,6 @@ class Dashboard extends Component {
 							</div>
 						</Card>}
 					</Grid>
-
-					{/* new customers */}
 					<Grid item xs={12} sm={6} md={3}>
 						{dashboardData && <Card className={classes.cardd}>
 							<div className={classes.row}>
@@ -680,268 +654,81 @@ class Dashboard extends Component {
 							</div>
 						</Card>}
 					</Grid>
-
-
-					{/* sales chart */}
 					<Grid item xs={12} sm={12} md={6}>
-						<Card
-							className={classes.whiteCard}
-							style={{
-								backgroundColor: "#FFFFFF",
-								boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)",
-								borderRadius: "8px",
-								left: "24px",
-								top: "292px",
-								width: "561px",
-								height: "323px",
-								maxWidth:"100%",
-							}}
-						>
+						<Card className={classes.whiteCard}>
 							{this.returnSalesChart(chartData.sales, chartData.previoussales)}
 						</Card>
 					</Grid>
-
-
-
-					{/* Energy chart */}
 					<Grid item xs={12} sm={12} md={6}>
-						<Card className={classes.whiteCard} style={{
-							backgroundColor: "#FFFFFF",
-							boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)",
-							borderRadius: "8px",
-							top: "292px",
-							// width: "561px",
-							left: "601px",
-							// height: "323px"
-						}}>
+						<Card className={classes.whiteCard}>
 							{this.returnEnergyChart(chartData.energyconsumption, chartData.previousEnegryConsumption)}
 						</Card>
 					</Grid>
-
-					{/* Action required */}
-					{/* <Grid item xs={12} sm={12} md={4}>
-							<Card className={classes.whiteCard}
-								style={{
-									// position:"absolute",
-									width: "425px",
-									height: "248px",
-									// left:"24px",
-									top: "631px",
-									background: "#FFFFFF",
-									boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
-								}}
-							>
-								<div style={{ width: "100%" }}>
-									<Typography className={classes.cardTitle} style={{ margin: 7 }}>Action Required</Typography>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>New Orders</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>High Priority Tickets</Typography>
-										<Typography className={classes.textBadge}>{0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>Order Modification</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.OrderModification : 0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>Installation</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
-									</div>
-								</div>
-							</Card>
-						</Grid> */}
-
-
-					{/* pending orderes */}
-					{/* <Grid item xs={12} sm={12} md={8}>
-							<Card className={classes.whiteCard}
-								style={{
-									// position:"absolute",
-									width: "735px",
-									height: "248px",
-									marginLeft: "40px",
-									left: "457px",
-									top: "631px",
-									background: "#FFFFFF",
-									boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
-
-								}}
-							>
-								<div style={{ width: "100%", }}>
-									<div className={classes.row} style={{ justifyContent: "space-between" }}>
-										<Typography className={classes.cardTitle} style={{ margin: 7 }}>Pending orders</Typography>
-										<Button variant="outlined" className={classes.button}>View All</Button>
-									</div>
-									{dashboardData && dashboardData.pendingOrder && dashboardData.pendingOrder.length > 0 && dashboardData.pendingOrder.map((item, index) =>
-										<div key={index.toString()} className={classes.rowContainer}>
-											<Typography className={classes.normalText}>#{item.OrderNo}</Typography>
-											<Typography className={classes.normalText}>{item.OrderDate}</Typography>
-											<Typography className={classes.normalText}>$ {item.OrderTotal}</Typography>
-										</div>)}
-								</div>
-							</Card>
-						</Grid> */}
-
-
-
-
-
-
-
-
-
-					<MediaQuery query='(min-device-width: 1224px)'>
-						<Grid item xs={12} sm={12} md={4}>
-							<Card className={classes.whiteCard}
-								style={{
-									// position:"absolute",
-									width: "425px",
-									height: "248px",
-									// left:"24px",
-									top: "631px",
-									background: "#FFFFFF",
-									boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
-								}}
-							>
-								<div style={{ width: "100%" }}>
-									<Typography className={classes.cardTitle} style={{ margin: 7 }}>Action Required</Typography>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>New Orders</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>High Priority Tickets</Typography>
-										<Typography className={classes.textBadge}>{0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>Order Modification</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.OrderModification : 0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>Installation</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
-									</div>
-								</div>
-							</Card>
-						</Grid>
-						<Grid item xs={12} sm={12} md={8}>
-							<Card className={classes.whiteCard}
-								style={{
-									// position:"absolute",
-									width: "735px",
-									height: "248px",
-									marginLeft: "40px",
-									left: "457px",
-									top: "631px",
-									background: "#FFFFFF",
-									boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
-
-								}}
-							>
-								<div style={{ width: "100%", }}>
-									<div className={classes.row} style={{ justifyContent: "space-between" }}>
-										<Typography className={classes.cardTitle} style={{ margin: 7 }}>Pending orders</Typography>
-										<Button variant="outlined" className={classes.button}>View All</Button>
-									</div>
-									{dashboardData && dashboardData.pendingOrder && dashboardData.pendingOrder.length > 0 && dashboardData.pendingOrder.map((item, index) =>
-										<div key={index.toString()} className={classes.rowContainer}>
-											<Typography className={classes.normalText}>#{item.OrderNo}</Typography>
-											<Typography className={classes.normalText}>{item.OrderDate}</Typography>
-											<Typography className={classes.normalText}>$ {item.OrderTotal}</Typography>
-										</div>)}
-								</div>
-							</Card>
-						</Grid>
-					</MediaQuery>
-					<MediaQuery query='(max-width: 1224px)'>
-						<Grid item xs={12} sm={12} md={4}>
-							<Card className={classes.whiteCard}>
-								<div style={{ width: "100%" }}>
-									<Typography className={classes.cardTitle}>Action Required</Typography>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>New Orders</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>High Priority Tickets</Typography>
-										<Typography className={classes.textBadge}>{0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>Order Modification</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.OrderModification : 0}</Typography>
-									</div>
-									<div className={classes.rowContainer}>
-										<Typography className={classes.normalText}>Installation</Typography>
-										<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
-									</div>
-								</div>
-							</Card>
-						</Grid>
-						<Grid item xs={12} sm={12} md={8}>
-							<Card className={classes.whiteCard}>
-								<div style={{ width: "100%", }}>
-									<div className={classes.row} style={{ justifyContent: "space-between" }}>
-										<Typography className={classes.cardTitle}>Pending Orders</Typography>
-										<Button variant="outlined" className={classes.button}>View All</Button>
-									</div>
-									{dashboardData && dashboardData.pendingOrder && dashboardData.pendingOrder.length > 0 && dashboardData.pendingOrder.map((item, index) =>
-										<div key={index.toString()} className={classes.rowContainer}>
-											<Typography className={classes.normalText}>{item.OrderNo}</Typography>
-											<Typography className={classes.normalText}>{item.OrderDate}</Typography>
-											<Typography className={classes.normalText}>{item.OrderTotal}</Typography>
-										</div>)}
-								</div>
-							</Card>
-						</Grid>
-					</MediaQuery>
-
-					{/* Top selling products */}
-					<Grid item xs={12} sm={12} md={7}>
-						<Card className={classes.whiteCard}
-							style={{
-								// position:"absolute",
-								width: "705px",
-								// height:"424.82px",
-								left: "24px",
-								top: "895px"
-							}}>
-							<div style={{ width: "100%" }}>
-								<Typography className={classes.cardTitle}>Top Selling Products</Typography>
-								{popularProducts && popularProducts.length > 0 && popularProducts.map((product, index) =>
-									<div key={index.toString()} className={classes.rowContainer}>
-										<Typography className={classes.normalText} style={{ width: "50%", display: 'flex', alignItems: 'center' }}> <Skeleton variant="rect" animation={false} style={{ backgroundColor: "#EEEEED", width: 75, height: 40, marginRight: 10 }} /> {product.ProductName}</Typography>
-										<Typography className={classes.normalText} style={{ width: "25%" }}>{product.ProductQuantity} Units</Typography>
-										<Typography className={classes.normalText} style={{ width: "25%", textAlign: "right" }}>$ {product.Sales}</Typography>
-									</div>
-								)}
+					<Grid item xs={12} sm={12} md={4}>
+						<Card className={classes.whiteCard}>
+							<Typography className={classes.cardTitle} style={{ margin: 7 }}>Action Required</Typography>
+							<div className={classes.rowContainer}>
+								<Typography className={classes.normalText}>New Orders</Typography>
+								<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
 							</div>
+							<div className={classes.rowContainer}>
+								<Typography className={classes.normalText}>High Priority Tickets</Typography>
+								<Typography className={classes.textBadge}>{0}</Typography>
+							</div>
+							<div className={classes.rowContainer}>
+								<Typography className={classes.normalText}>Order Modification</Typography>
+								<Typography className={classes.textBadge}>{dashboardData ? dashboardData.OrderModification : 0}</Typography>
+							</div>
+							<div className={classes.rowContainer}>
+								<Typography className={classes.normalText}>Installation</Typography>
+								<Typography className={classes.textBadge}>{dashboardData ? dashboardData.Installation : 0}</Typography>
+							</div>
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={12} md={8}>
+						<Card className={classes.whiteCard}>
+							<div className={classes.row} style={{ justifyContent: "space-between" }}>
+								<Typography className={classes.cardTitle} style={{ margin: 7 }}>Pending orders</Typography>
+								<Button variant="outlined" className={classes.button}>View All</Button>
+							</div>
+							{dashboardData && dashboardData.pendingOrder && dashboardData.pendingOrder.length > 0 && dashboardData.pendingOrder.map((item, index) =>
+								<div key={index.toString()} className={classes.rowContainer}>
+									<Typography className={classes.normalText}>#{item.OrderNo}</Typography>
+									<Typography className={classes.normalText}>{item.OrderDate}</Typography>
+									<Typography className={classes.normalText}>$ {item.OrderTotal}</Typography>
+								</div>)}
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={12} md={7}>
+						<Card className={classes.whiteCard}>
+							<Typography className={classes.cardTitle}>Top Selling Products</Typography>
+							{popularProducts && popularProducts.length > 0 && popularProducts.map((product, index) =>
+								<div key={index.toString()} className={classes.rowContainer}>
+									<Typography className={classes.normalText} style={{ width: "50%", display: 'flex', alignItems: 'center' }}> <Skeleton variant="rect" animation={false} style={{ backgroundColor: "#EEEEED", width: 75, height: 40, marginRight: 10 }} /> {product.ProductName}</Typography>
+									<Typography className={classes.normalText} style={{ width: "25%" }}>{product.ProductQuantity} Units</Typography>
+									<Typography className={classes.normalText} style={{ width: "25%", textAlign: "right" }}>$ {product.Sales}</Typography>
+								</div>
+							)}
 						</Card>
 					</Grid>
 
 
-					{/* city order statistics */}
-					<Grid item xs={12} sm={12} md={4}>
+					<Grid item xs={12} sm={12} md={5}>
 						<Card className={classes.whiteCard}
 							style={{
-								// position:"absolute",
-								width: "120%",
-								height: "430px",
-								marginLeft: "25px",
-								top: "895px",
-								background: "#FFFFFF",
-								boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
+								height: "65%",
+								// boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
 							}}
 						>
 							<div style={{ width: "100%" }}>
-								<Typography className={classes.cardTitle} style={{ margin: 7, display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+								<Typography className={classes.cardTitle} style={{ margin: 6, display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
 									City orders statistics
 									<Maplisting />
 								</Typography>
 								<div className={classes.rowContainer}></div>
 								<Map />
 							</div>
+
 						</Card>
 					</Grid>
 
