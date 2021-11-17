@@ -715,19 +715,19 @@ class Dashboard extends Component {
 
 					<Grid item xs={12} sm={12} md={5}>
 						<Card className={classes.whiteCard}
-							style={{
-								height: "65%",
-								// boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
-							}}
+							// style={{
+							// 	height: "65%",
+							// 	// boxShadow: "0px 8px 36px rgba(50, 50, 50, 0.08)"
+							// }}
 						>
-							<div style={{ width: "100%" }}>
+							{/* <div style={{ width: "100%" }}> */}
 								<Typography className={classes.cardTitle} style={{ margin: 6, display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
 									City orders statistics
 									<Maplisting />
 								</Typography>
 								<div className={classes.rowContainer}></div>
 								<Map />
-							</div>
+							{/* </div> */}
 
 						</Card>
 					</Grid>
