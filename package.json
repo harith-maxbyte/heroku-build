@@ -2,8 +2,7 @@
   "name": "EnergyApp",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
-  "dependencies": {
+ "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@nivo/core": "^0.74.0",
