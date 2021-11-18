@@ -75,7 +75,7 @@ export default function Map() {
         });
     
         
-        // map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+        map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
     
 
         return () => map.remove();
