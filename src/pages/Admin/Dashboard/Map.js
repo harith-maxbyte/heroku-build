@@ -1,7 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
-//{Popup,NavigationControl}
-import './Styles.css';
+import React, { useState } from 'react';
+import ReactMapGL from 'react-map-gl';
 
 const ColoredLine = ({ color }) => (
     <>
@@ -56,42 +54,32 @@ const ColoredLine = ({ color }) => (
         </div>
     </>
 );
-
-mapboxgl.accessToken= 'pk.eyJ1IjoiaGFyaXRoa3Y0NyIsImEiOiJja3Zva3Y2N3kxMmFkMnFxZnRzaGM1ZHplIn0.ZHaPXHDqz1uRett0GepUBg';
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFyaXRoa3Y0NyIsImEiOiJja3Zva3Y2N3kxMmFkMnFxZnRzaGM1ZHplIn0.ZHaPXHDqz1uRett0GepUBg';
 export default function Map() {
 
-    const mapContainerRef = useRef(null);
+    const [viewport, setViewport] = useState({
+        latitude: 1.3521,
+        longitude: 103.8198,
+        zoom: 9,
+        width: "200%",
+        height: "200%"
+         
+    });
 
-    
-     useEffect(() => {
-        const map = new mapboxgl.Map({
-
-          container: mapContainerRef.current,
-          style: 'mapbox://styles/mapbox/streets-v11',
-          center: [-104.9876, 39.7405],
-          zoom: 12.5,
-          height:"100%",
-          attributionControl: false
-        });
-    
-        
-        // map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    
-
-        return () => map.remove();
-      }, []); 
-
-
-
+		
     return (
-<>
-
-            <div ref={mapContainerRef} />
-
-
-            <ColoredLine color={["#9BE6FC", "#5EC8E6", "#52ADD5", "#4593C3", "#377AB2"]} />
-        </>
         
+         <div style={{display:"block",height:135,padding:10,borderRadius:8,marginTop:-20}}>
+           {/* <Grid item xs={12} sm={12} md={5}> */}
+               {/* <Card {...styles}> */}
+            <ReactMapGL
+                mapboxApiAccessToken={MAPBOX_TOKEN}
+                {...viewport}
+                onViewportChange={(viewport) => setViewport(viewport)}
+                mapStyle="mapbox://styles/harithkv47/ckvq4u0ctflu514nnayrhyvo0"
+            />
+            <ColoredLine color={["#9BE6FC", "#5EC8E6", "#52ADD5", "#4593C3", "#377AB2"]} />
+         </div>
     );
 }
 

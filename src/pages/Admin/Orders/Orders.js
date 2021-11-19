@@ -513,8 +513,8 @@ class Orders extends Component {
 					text: "Order Type",
 					align: 'left',
 					floating: true,
-					offsetX:7,
-				    offsetY:7,
+					offsetX: 7,
+					offsetY: 7,
 					style: {
 						fontSize: '18px',
 						fontWeight: 600,
@@ -611,8 +611,8 @@ class Orders extends Component {
 						left: "15px",
 						top: "18px"
 					}}>Order status</h3>
-					<div 
-					style={{ height: 320 }}
+					<div
+						style={{ height: 320 }}
 					>
 						<ResponsivePie
 							data={data}
@@ -940,7 +940,7 @@ class Orders extends Component {
 				{this.state.val === '0' && <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', fontSize: '14px', marginBottom: '2%' }}>{this.state.startDate} to {this.state.endDate} <span style={{ color: 'blue', fontSize: '12px', marginLeft: '4%', cursor: 'pointer' }} onClick={this.changeCustomDate}>Change</span></div>}
 				<Grid container spacing={4}>
 					{!this.state.enableOrderListView && <Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.cardA}>
+						<Card className={this.state.select_order_status === "ALL" || this.state.select_order_status === "Completed" ? classes.selectCardA : classes.cardA} onClick={() => this.selectedList("ALL")}>
 							<Typography className={classes.cardTextTitle}>Today</Typography>
 							{orderDashboardCount &&
 								<Typography className={classes.cardTextSecondTitle}>
@@ -950,7 +950,7 @@ class Orders extends Component {
 						</Card>
 					</Grid>}
 					{!this.state.enableOrderListView && <Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.selectCardA}>
+						<Card className={this.state.select_order_status === "Pending" ? classes.selectCardA : classes.cardA} onClick={() => this.selectedList("Pending")}>
 							<Typography className={classes.selectedCardTextTitle}>Pending</Typography>
 							{orderDashboardCount &&
 								<Typography className={classes.selectedCardTextSecondTitle}>
@@ -960,13 +960,13 @@ class Orders extends Component {
 						</Card>
 					</Grid>}
 					{!this.state.enableOrderListView && <Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.cardA}>
+						<Card className={this.state.select_order_status === "Assigned to O&M" ? classes.selectCardA : classes.cardA} onClick={() => this.selectedList("Assigned to O&M")}>
 							<Typography className={classes.cardTextTitle}>Assigned to O&M </Typography>
 							{orderDashboardCount && <Typography className={classes.cardTextSecondTitle}>{orderDashboardCount.Assingnedto_OandM_Status}</Typography>}
 						</Card>
 					</Grid>}
 					{!this.state.enableOrderListView && <Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.cardA}>
+						<Card className={this.state.select_order_status === "Cancelled" ? classes.selectCardA : classes.cardA} onClick={() => this.selectedList("Cancelled")}>
 							<Typography className={classes.cardTextTitle}>Cancelled</Typography>
 							{orderDashboardCount && <Typography className={classes.cardTextSecondTitle}>{orderDashboardCount.Cancelled_Status}</Typography>}
 						</Card>
@@ -982,11 +982,11 @@ class Orders extends Component {
 					</Grid>}
 					{!this.state.enableOrderListView && piechartData && piechartData.OrderStatus && <Grid item xs={12} md={6}>
 						<Card className={classes.card}
-							// style={{
-							// 	width: "561px",
-							// 	height: "100%"
-							// 	}}
-								>
+						// style={{
+						// 	width: "561px",
+						// 	height: "100%"
+						// 	}}
+						>
 							{this.returnPieChart(piechartData.OrderStatus)}
 							{/* asdasdasda asdadasdas */}
 						</Card>

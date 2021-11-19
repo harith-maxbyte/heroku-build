@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withStyles, Grid, Typography, Button, Breadcrumbs, TextField, Dialog, CircularProgress } from '@material-ui/core';
+import { withStyles, Grid, Typography, Button, Card, Breadcrumbs, TextField, Dialog, CircularProgress, CardActionArea } from '@material-ui/core';
 import { FiChevronRight } from "react-icons/fi"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { addProducts, productEfficiencyProfile } from "../../../store/actions/product_action";
 import { getProductsCategory } from "../../../store/actions/product_action";
+
 
 /**Created common styles for UI.*/
 const styles = theme => ({
@@ -53,9 +54,9 @@ const styles = theme => ({
 		backgroundColor: "#FFFFFF",
 		border: "1px solid #CFCFCE",
 		borderRadius: "8px",
-		padding: "12px 16px",
+		// padding: "12px 16px",
 		boxSizing: "border-box",
-		height: "48px",
+		// height: "48px",
 		fontSize: "13x !important",
 		fontFamily: "SourceSansPro-Regular",
 		"&:hover": {
@@ -109,9 +110,8 @@ const styles = theme => ({
 		},
 	},
 	uploadButton: {
-
 		// width: "181px",
-		width:"11.3125em",
+		width: "11.3125em",
 		backgroundColor: "#1B1B1B",
 		borderRadius: "8px",
 		boxShadow: "0px 0px 0px 0px #1B1B1B",
@@ -158,6 +158,23 @@ const styles = theme => ({
 		boxShadow: "none",
 		overflow: "hidden"
 	},
+	topcontainer: {
+		marginTop: theme.spacing(2)
+	},
+	fcutext: {
+		fontSize: 15,
+		color: "#3E3E3E",
+		display: "flex",
+		justifyContent: "center",
+		fontFamily: "SourceSansPro-SemiBold",
+	},
+	fcucard: {
+		display: 'block',
+		backgroundColor: "#FEC9B4",
+		padding: "15px",
+		borderRadius: 8,
+		boxShadow: "0px 0px 0px 0px #E1E7ED",
+	}
 });
 
 /**
@@ -165,12 +182,14 @@ const styles = theme => ({
  * Class representing AddProduct component
  */
 class AddProduct extends Component {
+
 	constructor(props) {
+
 		super(props);
 
 		this.state = {
 			productName: "",
-			quantity: "",
+			nooffcu: "",
 			price: "",
 			productCode: "",
 			manufacturer: "",
@@ -179,12 +198,11 @@ class AddProduct extends Component {
 			coolingCapacity: "",
 			powerConsumption: "",
 			currentRating: "",
-			fcuCapacity: "",
 			efficiencyProfile: "",
 			productCategoryId: "",
 			Costprice: "",
 			productName_error: false,
-			quantity_error: false,
+			nooffcu_error: false,
 			price_error: false,
 			productCode_error: false,
 			manufacturer_error: false,
@@ -193,14 +211,47 @@ class AddProduct extends Component {
 			coolingCapacity_error: false,
 			powerConsumption_error: false,
 			currentRating_error: false,
-			fcuCapacity_error: false,
 			efficiencyProfile_error: false,
 			productCategoryId_error: false,
 			Costprice_error: false,
 
 			file: null,
 			imgSrc: null,
-			loading: false
+			loading: false,
+
+
+			fcufile: null,
+			fcuimgSrc: null,
+
+			fcu: [],
+			selectedFcu: "",
+			fcucode: "",
+			fcuname: [],
+			type: [],
+			model: [],
+			color: [],
+			capacity: [],
+			idealtemp: [],
+			powerconsume: [],
+			compressortype: [],
+			condensorcoil: [],
+			indoordimention: [],
+			outdoordimention: [],
+			threestarbeerating: [],
+
+			fcucode_error: false,
+			fcuname_error: false,
+			type_error: false,
+			model_error: false,
+			color_error: false,
+			capacity_error: false,
+			idealtemp_error: false,
+			powerconsume_error: false,
+			compressortype_error: false,
+			condensorcoil_error: false,
+			indoordimention_error: false,
+			outdoordimention_error: false,
+			threestarbeerating_error: false,
 		};
 	}
 
@@ -262,6 +313,19 @@ class AddProduct extends Component {
 	componentDidMount() {
 		this.props.dispatch(getProductsCategory())
 	}
+
+	fcuGrid(val) {
+		var newStateArray = [];
+		this.setState({
+			nooffcu: val,
+			nooffcu_error: false,
+			fcu: this.state.fcu.splice(val)
+		});
+		for (var i = 0; i < val; i++) {
+			newStateArray.push(`FCU ${i + 1}`);
+		}
+		this.setState({ fcu: newStateArray });
+	};
 
 	submit = () => {
 		let { productName,
@@ -329,6 +393,7 @@ class AddProduct extends Component {
 			{ title: 'tag4', year: 2009 },
 			{ title: 'tag5', year: 1975 },
 		];
+
 		return (
 			<div className={classes.root}>
 				<Breadcrumbs separator={<FiChevronRight size={15} />} aria-label="breadcrumb" style={{ color: "#9F9E9E", left: "29.21%", right: "26.03%", top: "10.88%", bottom: "10.93%" }}>
@@ -340,237 +405,224 @@ class AddProduct extends Component {
 					</Typography>
 					<Typography style={{ fontFamily: "SourceSansPro-Regular", fontSize: 15, fontWeight: "600", lineHeight: "20px", width: "132px", height: "20px" }} color="textPrimary">Add New Product</Typography>
 				</Breadcrumbs>
-				
+
 				<div className={classes.wrapper}>
-				
-					{/* <div > */}
-						
-						<Grid container spacing={2} direction="column" className={classes.paper}>
+
+					<Grid container spacing={2} direction="column" className={classes.paper}>
 						<Typography className={classes.title}>Basic Information</Typography>
-							<Grid container direction="row">
-								<Grid item xs={5}>
-									<Typography className={classes.textFiledText}>Product Name</Typography>
-								</Grid>
-								<Grid item xs={8} sm={7}>
-									<TextField
-										placeholder="Enter Product Name"
-										variant="filled"
-										onChange={(event) => this.setState({ productName: event.target.value, productName_error: false, error_text: null })}
-										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-										fullWidth
-										autoComplete="off"
-									/>
-								</Grid>
+						<Grid container direction="row">
+							<Grid item xs={5}>
+								<Typography className={classes.textFiledText}>Product Name</Typography>
 							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}>
-									<Typography className={classes.textFiledText}>Category</Typography></Grid>
-								<Grid item xs={8} sm={7}>
-									<TextField
-										variant="filled"
-										value={this.state.productCategoryId}
-										onChange={(event) => this.setState({ productCategoryId: event.target.value, productCategoryId_error: false })}
-										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-										fullWidth
-										select
-										SelectProps={{
-											native: true,
-										}}
-										autoComplete="off"
-										error={this.state.productCategoryId_error ? true : false}
-										helperText={this.state.productCategoryId_error ? "Please enter product category" : false}
-									>
-										<option value="" disabled style={{ fontFamily: "SourceSansPro-Regular" }}>
-											Select
-										</option>
-										{productCategories && productCategories.length > 0 && productCategories.map((value) => {
-											return <option value={value.ProductCategoryName} style={{ fontFamily: "SourceSansPro-Regular" }}>
-												{value.ProductCategoryName}
-											</option>
-										})}
-									</TextField></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Product Code</Typography></Grid>
-								<Grid item xs={8} sm={7}>
-									<TextField
-										placeholder="Enter Product Code"
-										variant="filled"
-										value={this.state.productCode}
-										onChange={(event) => this.setState({ productCode: event.target.value, productCode_error: false })}
-										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-										fullWidth
-										autoComplete="off"
-									/></Grid>
-							</Grid>
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Product SKU</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Product SKU"
+							<Grid item xs={8} sm={7}>
+								<TextField
+									placeholder="Enter Product Name"
 									variant="filled"
-									value={this.state.productSKU}
-									onChange={(event) => this.setState({ productSKU: event.target.value, productSKU_error: false })}
+									onChange={(event) => this.setState({ productName: event.target.value, productName_error: false, error_text: null })}
 									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
 									fullWidth
 									autoComplete="off"
-								/></Grid>
-							</Grid>
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Manufacturer</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Brand Name"
-									variant="filled"
-									value={this.state.manufacturer}
-									onChange={(event) => this.setState({ manufacturer: event.target.value, manufacturer_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Quantity</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Qunatity"
-									variant="filled"
-									value={this.state.quantity}
-									onChange={(event) => this.setState({ quantity: event.target.value, quantity_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Price</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Product price"
-									variant="filled"
-									value={this.state.price}
-									onChange={(event) => this.setState({ price: event.target.value, price_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Tax(%)</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter tax"
-									variant="filled"
-									value={this.state.productTax}
-									onChange={(event) => this.setState({ productTax: event.target.value, productTax_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Cooling Capacity</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Cooling Capacity"
-									variant="filled"
-									value={this.state.coolingCapacity}
-									onChange={(event) => this.setState({ coolingCapacity: event.target.value, coolingCapacity_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Power Consumption</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Power Consumption"
-									variant="filled"
-									value={this.state.powerConsumption}
-									onChange={(event) => this.setState({ powerConsumption: event.target.value, powerConsumption_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Current Rating</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Current Rating"
-									variant="filled"
-									value={this.state.currentRating}
-									onChange={(event) => this.setState({ currentRating: event.target.value, currentRating_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>FCU Capacities</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter FCU Capacities"
-									variant="filled"
-									value={this.state.fcuCapacity}
-									onChange={(event) => this.setState({ fcuCapacity: event.target.value, fcuCapacity_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Effiency Profile</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Effiency Profile"
-									variant="filled"
-									value={this.state.efficiencyProfile}
-									onChange={(event) => this.setState({ efficiencyProfile: event.target.value, efficiencyProfile_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Cost Price</Typography></Grid>
-								<Grid item xs={8} sm={7}><TextField
-									placeholder="Enter Cost price"
-									variant="filled"
-									value={this.state.Costprice}
-									onChange={(event) => this.setState({ Costprice: event.target.value, Costprice_error: false })}
-									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
-									fullWidth
-									autoComplete="off"
-								/></Grid>
-							</Grid>
-
-							<Grid container direction="row">
-								<Grid item xs={5}><Typography className={classes.textFiledText}>Tags</Typography></Grid>
-								<Grid item xs={8} sm={7}><Autocomplete
-									multiple
-									id="tags-outlined"
-									className={classes.autoComplete}
-									options={tags}
-									getOptionLabel={(option) => option.title}
-									filterSelectedOptions
-									renderInput={(params) => (
-										<TextField
-											{...params}
-											variant="outlined"
-											placeholder="Select"
-										/>
-									)}
-								/></Grid>
+								/>
 							</Grid>
 						</Grid>
-					{/* </div> */}
-					
+
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Product Code</Typography></Grid>
+							<Grid item xs={8} sm={7}>
+								<TextField
+									placeholder="Enter Product Code"
+									variant="filled"
+									value={this.state.productCode}
+									onChange={(event) => this.setState({ productCode: event.target.value, productCode_error: false })}
+									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+									fullWidth
+									autoComplete="off"
+								/></Grid>
+						</Grid>
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Product SKU</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Product SKU"
+								variant="filled"
+								value={this.state.productSKU}
+								onChange={(event) => this.setState({ productSKU: event.target.value, productSKU_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Manufacturer</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Brand Name"
+								variant="filled"
+								value={this.state.manufacturer}
+								onChange={(event) => this.setState({ manufacturer: event.target.value, manufacturer_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+						<Grid container direction="row">
+							<Grid item xs={5}>
+								<Typography className={classes.textFiledText}>Category</Typography></Grid>
+							<Grid item xs={8} sm={7}>
+								<TextField
+									variant="filled"
+									value={this.state.productCategoryId}
+									onChange={(event) => this.setState({ productCategoryId: event.target.value, productCategoryId_error: false })}
+									InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+									fullWidth
+									select
+									SelectProps={{
+										native: true,
+									}}
+									autoComplete="off"
+									error={this.state.productCategoryId_error ? true : false}
+									helperText={this.state.productCategoryId_error ? "Please enter product category" : false}
+								>
+									<option value="" disabled style={{ fontFamily: "SourceSansPro-Regular" }}>
+										Select
+									</option>
+									{productCategories && productCategories.length > 0 && productCategories.map((value) => {
+										return <option value={value.ProductCategoryName} style={{ fontFamily: "SourceSansPro-Regular" }}>
+											{value.ProductCategoryName}
+										</option>
+									})}
+								</TextField></Grid>
+						</Grid>
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Number of FCU</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								type="number"
+								placeholder="Enter Number of FCU"
+								variant="filled"
+								value={this.state.nooffcu}
+								onChange={(event) => this.fcuGrid(event.target.value)}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Price</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Product price"
+								variant="filled"
+								value={this.state.price}
+								onChange={(event) => this.setState({ price: event.target.value, price_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Tax(%)</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter tax"
+								variant="filled"
+								value={this.state.productTax}
+								onChange={(event) => this.setState({ productTax: event.target.value, productTax_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Cooling Capacity</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Cooling Capacity"
+								variant="filled"
+								value={this.state.coolingCapacity}
+								onChange={(event) => this.setState({ coolingCapacity: event.target.value, coolingCapacity_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Power Consumption</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Power Consumption"
+								variant="filled"
+								value={this.state.powerConsumption}
+								onChange={(event) => this.setState({ powerConsumption: event.target.value, powerConsumption_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Current Rating</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Current Rating"
+								variant="filled"
+								value={this.state.currentRating}
+								onChange={(event) => this.setState({ currentRating: event.target.value, currentRating_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+
+
+
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Effiency Profile</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Effiency Profile"
+								variant="filled"
+								value={this.state.efficiencyProfile}
+								onChange={(event) => this.setState({ efficiencyProfile: event.target.value, efficiencyProfile_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Cost Price</Typography></Grid>
+							<Grid item xs={8} sm={7}><TextField
+								placeholder="Enter Cost price"
+								variant="filled"
+								value={this.state.Costprice}
+								onChange={(event) => this.setState({ Costprice: event.target.value, Costprice_error: false })}
+								InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+								fullWidth
+								autoComplete="off"
+							/></Grid>
+						</Grid>
+
+						<Grid container direction="row">
+							<Grid item xs={5}><Typography className={classes.textFiledText}>Tags</Typography></Grid>
+							<Grid item xs={8} sm={7}><Autocomplete
+								multiple
+								id="tags-outlined"
+								className={classes.autoComplete}
+								options={tags}
+								getOptionLabel={(option) => option.title}
+								filterSelectedOptions
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										variant="outlined"
+										placeholder="Select"
+									/>
+								)}
+							/></Grid>
+						</Grid>
+
+					</Grid>
+
 					<div className={classes.paper}>
 						<Grid container spacing={2} direction="column" >
 							<Typography className={classes.title}>Product Image</Typography>
 							<Grid item xs={12}>
 								{this.state.file !== null ?
-									<div className={classes.dragContainer} 
+									<div className={classes.dragContainer}
 									// style={{ display: "block", height: 150 }}
 									>
 										<div>
@@ -662,22 +714,331 @@ class AddProduct extends Component {
 					</div>
 				</Dialog>
 
+				<Grid container spacing={2} className={classes.topcontainer}>
+					{this.state.fcu.map((item, indx) => {
+						return (
+							<Grid item xs={12} sm={6} md={1} onClick={() => this.setState({ selectedFcu: item })}>
+								<CardActionArea>
+									<Card className={classes.fcucard}>
+										<Typography className={classes.fcutext} key={indx}>FCU {indx + 1}</Typography>
+									</Card>
+								</CardActionArea>
+							</Grid>
+						);
+					})
+					}
+				</Grid>
+
+				{this.state.fcu.length > 0 && <>
+					<div className={classes.wrapper}>
+						<Grid container spacing={2} direction="column" className={classes.paper}>
+							{this.state.selectedFcu === "" ?
+								<Typography className={classes.title}>FCU Information</Typography>
+								: <Typography className={classes.title}>{this.state.selectedFcu} Details</Typography>
+							}
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>FCU Code</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter FCU Code"
+										variant="filled"
+										onChange={(event) => this.setState({ fcucode: event.target.value, fcucode_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>FCU Name</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter FCU Name"
+										variant="filled"
+										onChange={(event) => this.setState({ fcuname: event.target.value, fcuname_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Type</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter FCU type"
+										variant="filled"
+										onChange={(event) => this.setState({ type: event.target.value, type_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Model</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter Model"
+										variant="filled"
+										onChange={(event) => this.setState({ model: event.target.value, model_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Color</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter Color"
+										variant="filled"
+										onChange={(event) => this.setState({ color: event.target.value, color_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Capacity</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter FCU capacity"
+										variant="filled"
+										onChange={(event) => this.setState({ capacity: event.target.value, capacity_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Ideal Temperature</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter Ideal temperature"
+										variant="filled"
+										onChange={(event) => this.setState({ idealtemp: event.target.value, idealtemp_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Power Consumption</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter power consumption"
+										variant="filled"
+										onChange={(event) => this.setState({ powerconsume: event.target.value, powerconsume_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Compressor Type</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter compressor type"
+										variant="filled"
+										onChange={(event) => this.setState({ compressortype: event.target.value, compressortype_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Condensor Coil</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter condensor coil"
+										variant="filled"
+										onChange={(event) => this.setState({ condensorcoil: event.target.value, condensorcoil_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Indoor Dimention</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter Indoor Dimention"
+										variant="filled"
+										onChange={(event) => this.setState({ indoordimention: event.target.value, indoordimention_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Outdoor Dimention</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter Outdoor Dimention"
+										variant="filled"
+										onChange={(event) => this.setState({ outdoordimention: event.target.value, outdoordimention_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+
+							<Grid container direction="row">
+								<Grid item xs={5}>
+									<Typography className={classes.textFiledText}>Three Star BEE Rating 2020</Typography>
+								</Grid>
+								<Grid item xs={8} sm={7}>
+									<TextField
+										placeholder="Enter Three Star BEE Rating 2020"
+										variant="filled"
+										onChange={(event) => this.setState({ threestarbeerating: event.target.value, threestarbeerating_error: false, error_text: null })}
+										InputProps={{ classes: { input: classes.inputStyle, underline: classes.underline, root: classes.inputRoot } }}
+										fullWidth
+										autoComplete="off"
+									/>
+								</Grid>
+							</Grid>
+						</Grid>
+
+
+						<div className={classes.paper}>
+							<Grid container spacing={2} direction="column" >
+								{/* <Typography className={classes.title}>FCU Image</Typography> */}
+								{this.state.selectedFcu === "" ?
+									<Typography className={classes.title}>FCU Image</Typography>
+									: <Typography className={classes.title}>{this.state.selectedFcu} Image </Typography>
+								}
+								<Grid item xs={12}>
+									{this.state.file !== null ?
+										<div className={classes.dragContainer}
+										// style={{ display: "block", height: 150 }}
+										>
+											<div>
+												<img src={this.state.imgSrc} alt="org" width={100} height="auto" />
+											</div>
+											<div>
+												<input
+													accept="image/*"
+													className={classes.inputimage}
+													id="text-button-file1"
+													multiple
+													type="file"
+													onChange={this.fileHandler}
+												/>
+												<label htmlFor="text-button-file1">
+													<Button component="span" variant="contained" className={classes.uploadButton} >
+														Change
+													</Button>
+												</label>
+											</div>
+										</div>
+										:
+										<div className={classes.dragContainer}
+											onDragOver={this.dragOver}
+											onDragEnter={this.dragEnter}
+											onDragLeave={this.dragLeave}
+											onDrop={this.fileDrop}
+										>
+											<Typography style={{ fontSize: 14, color: "#000", padding: "10px 0px", fontFamily: "SourceSansPro-Regular" }}>Drag and drop files here</Typography>
+											<Typography style={{ fontSize: 13, color: "#666666", fontFamily: "SourceSansPro-Regular" }}>or</Typography>
+											<input
+												accept="image/*"
+												className={classes.inputimage}
+												id="text-button-file1"
+												multiple
+												type="file"
+												onChange={this.fileHandler}
+											/>
+											<label htmlFor="text-button-file1">
+												<Button component="span" variant="contained" className={classes.uploadButton} >
+													Upload
+												</Button>
+											</label>
+
+										</div>}
+
+
+									<hr
+										style={{
+											margin: "24px 0px",
+											alignSelf: "stretch",
+											border: "1px solid #E1E0E0",
+											marginLeft: "-17px",
+											marginRight: "-17px"
+										}}
+									/>
+
+
+
+								</Grid>
+							</Grid>
+						</div>
+					</div>
+				</>
+				}
 
 				<div className={classes.bottomWrapper}>
 					<div className={classes.bottomPaper}>
 						<Button variant="contained" className={classes.buttonVariant} onClick={() => this.submit()}
-							style={{ display: "flex", justifyContent: "center", backgroundColor: "#FFFFFF", border: "1px solid #616060",width:"100%", borderRadius: "8px" }}>
+							style={{ display: "flex", justifyContent: "center", backgroundColor: "#FFFFFF", border: "1px solid #616060", width: "100%", borderRadius: "8px" }}>
 							<Typography className={classes.textFiledText}>Discard</Typography>
 						</Button>
 					</div>
 					<div className={classes.bottomPaper}>
 
 						<Button variant="contained" className={classes.buttonVariant} onClick={() => this.submit()}
-							style={{ padding: "16px",  display: "flex", justifyContent: "center", backgroundColor: "#57B78C",width:"100%", borderRadius: "8px" }}>
+							style={{ padding: "16px", display: "flex", justifyContent: "center", backgroundColor: "#57B78C", width: "100%", borderRadius: "8px" }}>
 							Create Product
 						</Button>
 					</div>
 				</div>
+
+
 			</div>
 		);
 	}

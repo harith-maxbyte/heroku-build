@@ -593,8 +593,8 @@ class Customers extends Component {
 				text: "Total Customers",
 				align: 'left',
 				floating: true,
-				offsetX:7,
-				offsetY:7,
+				offsetX: 7,
+				offsetY: 7,
 				style: {
 					fontSize: '18px',
 					fontWeight: 600,
@@ -843,7 +843,6 @@ class Customers extends Component {
 	render() {
 		const { classes, allCustomers, coutomersOverviewCount, customerStatusReportsPie } = this.props;
 		const { rowsPerPage, page } = this.state;
-		console.log("allCustomers=", allCustomers)
 		return (
 			<div className={classes.root}>
 				{this.state.enableCustomModal && <CustomModal isOpen={this.state.enableCustomModal} fromDate={this.state.startDate} toDate={this.state.endDate} handelopen={this.handleOpenCustomModel} cancel={this.handleCloseCustomModel} />}
@@ -898,7 +897,7 @@ class Customers extends Component {
 				<Grid container spacing={4}>
 					{!this.state.enableCustomerFullView && <Grid item xs={12} sm={6} md={3}>
 						{coutomersOverviewCount &&
-							<Card className={classes.cardA}>
+							<Card className={this.state.select_customer_plan === "Subscriber" ? classes.selectCardA : classes.cardA} onClick={() => this.selectCustomerPlan("Subscriber")}>
 								<Typography className={classes.cardTextTitle}>Subscribers</Typography>
 								<Typography className={classes.cardTextSecondTitle}>
 									{coutomersOverviewCount.Subcribers}
@@ -908,8 +907,8 @@ class Customers extends Component {
 					</Grid>}
 					{!this.state.enableCustomerFullView && <Grid item xs={12} sm={6} md={3}>
 						{coutomersOverviewCount &&
-							<Card className={classes.selectCardA}>
-								<Typography className={classes.selectedCardTextTitle}>Subscription Overdue</Typography>
+							<Card className={this.state.select_customer_plan === "ALL" ? classes.selectCardA : classes.cardA} onClick={() => this.selectCustomerPlan("ALL")}>
+								<Typography>Subscription Overdue</Typography>
 								<Typography className={classes.selectedCardTextSecondTitle}>
 									{coutomersOverviewCount.SubcriptionOverdue}
 								</Typography>
@@ -918,7 +917,7 @@ class Customers extends Component {
 					</Grid>}
 					{!this.state.enableCustomerFullView && <Grid item xs={12} sm={6} md={3}>
 						{coutomersOverviewCount &&
-							<Card className={classes.cardA}>
+							<Card className={this.state.select_customer_plan === "One-Time" ? classes.selectCardA : classes.cardA} onClick={() => this.selectCustomerPlan("One-Time")}>
 								<Typography className={classes.cardTextTitle}>Leads </Typography>
 								<Typography className={classes.cardTextSecondTitle}>
 									{coutomersOverviewCount.lead}
@@ -928,7 +927,7 @@ class Customers extends Component {
 					</Grid>}
 					{!this.state.enableCustomerFullView && <Grid item xs={12} sm={6} md={3}>
 						{coutomersOverviewCount &&
-							<Card className={classes.cardA}>
+							<Card className={this.state.select_customer_plan === "ALL" ? classes.selectCardA : classes.cardA} onClick={() => this.selectCustomerPlan("ALL")} >
 								<Typography className={classes.cardTextTitle}>Subscription Widthdrawn</Typography>
 								<Typography className={classes.cardTextSecondTitle}>
 									{coutomersOverviewCount.SubcriptionWithdrawn}
